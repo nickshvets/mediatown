@@ -1,6 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
- 
+import { useSelector, useDispatch, Provider } from 'react-redux';
+import { RootState } from './reducers';
+
 
 const App = () => {
  
@@ -14,4 +16,8 @@ if (!container) {
   throw new Error('No container found');
 }
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
