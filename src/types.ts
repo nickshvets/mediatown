@@ -8,3 +8,11 @@ export type MediaType = {
   startDate?: Date;
   image?: string;
 };
+
+export const emptyMedia: MediaType = {
+  title: '',
+  type: '',
+  genre: '',
+  releaseYear: 0,
+  rating: 0,
+};
