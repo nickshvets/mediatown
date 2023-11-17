@@ -16,7 +16,7 @@ const MediaContainer = styled.div<{ backgroundUrl?: string }>`
       rgba(22, 22, 22, 0.96) 60%,
       transparent 80%
     ),
-    url(${(props) =>
+    url(${(props: any) =>
       props.backgroundUrl ||
       'https://free4kwallpapers.com/uploads/originals/2015/12/16/the-evil-within-2014-game-wallpaper.jpg'});
 
