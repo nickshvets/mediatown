@@ -1,13 +1,186 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSelector, useDispatch, Provider } from 'react-redux';
+import {
+  getData,
+  updateData,
+  deleteData,
+  createData,
+  searchData,
+} from './actions/actions';
 import { RootState } from './reducers';
+import { MediaType, emptyMedia } from './types';
+import Media from './MediaItem';
+import {
+  MediaListContainer,
+  MediaListControls,
+  LoadingStatus,
+  LoadingError,
+  Input,
+  Button,
+  H4,
+  Container,
+} from './components';
 
+import { store } from './store/store';
+import GlobalStyle from './GlobalStyle';
+import { MediaForm } from './components/media/MediaForm';
+import Select from './components/Select';
 
 const App = () => {
- 
+  const { data, loading, error } = useSelector(
+    (state: RootState) => state.media
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //@ts-ignore
+    dispatch(getData());
+  }, [dispatch]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [modalProps, setModalProps] = useState({ open: false } as {
+    open: boolean;
+    create?: boolean;
+  });
+  const [mediaForm, setMediaForm] = useState(emptyMedia);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      dispatch(searchData(searchTerm));
+    }, 1000);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [dispatch, searchTerm]);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const onDelete = (id: number) => {
+    const result = window.confirm(
+      'Do you really want to delete this mediaItem?'
+    );
+    if (result) {
+      dispatch(deleteData(id));
+    }
+  };
+
+  const handleModalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let newValue: string | number | undefined = value;
+
+    if ((name === 'releaseYear' || name === 'rating') && value === '') {
+      newValue = undefined;
+    } else if (name === 'releaseYear' || name === 'rating') {
+      newValue = parseInt(value, 10);
+    }
+
+    setMediaForm((prev) => ({ ...prev, [name]: newValue }));
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setMediaForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (create: boolean) => {
+    if (create) {
+      dispatch(createData(mediaForm));
+      setModalProps({ open: false });
+      setMediaForm(emptyMedia);
+    } else {
+      const { id } = mediaForm;
+      if (id !== undefined) {
+        dispatch(updateData(id, mediaForm));
+        setModalProps({ open: false });
+        setMediaForm(emptyMedia);
+      }
+    }
+  };
+
+  const loadFunction = () => {
+    if (loading) {
+      return <LoadingStatus>Loading media ...</LoadingStatus>;
+    } else if (Array.isArray(data) && data.length === 0) {
+      return <LoadingStatus>No media found.</LoadingStatus>;
+    } else if (Array.isArray(data) && data.length > 0) {
+      return (
+        <MediaListContainer>
+          {data.map((mediaItem: MediaType) => (
+            <Media
+              key={mediaItem.id}
+              mediaItem={mediaItem}
+              onDelete={onDelete}
+              setModalProps={setModalProps}
+              setMediaForm={setMediaForm}
+            />
+          ))}
+
+          <MediaForm
+            modalProps={modalProps}
+            mediaForm={mediaForm}
+            handleModalInputChange={handleModalInputChange}
+            handleSelectChange={handleSelectChange}
+            handleSubmit={handleSubmit}
+            setModalProps={setModalProps}
+            setMediaForm={setMediaForm}
+          />
+        </MediaListContainer>
+      );
+    } else if (error) {
+      return (
+        <LoadingError>
+          <LoadingStatus>Something went wrong.</LoadingStatus>
+          {/* @ts-ignore */}
+          <Button onClick={() => dispatch(getData())}>Retry</Button>
+        </LoadingError>
+      );
+    }
+  };
+
+  const [selectedType, setSelectedType] = useState('All');
+  useEffect(() => {
+    //@ts-ignore
+    dispatch(getData(selectedType)); // Pass selectedType as a filter to getData
+  }, [dispatch, selectedType]);
+
+  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(event.target.value);
+  };
+
   return (
-      <div>App</div>
+    <Container>
+      <H4>MEDIA TOWN</H4>
+      <MediaListControls>
+        <div style={{ display: 'flex' }}>
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={handleInputChange}
+            placeholder="Search Media..."
+          />
+          <Select
+            style={{ marginLeft: '0.1rem' }}
+            value={selectedType}
+            onChange={handleTypeChange}
+          >
+            <option value="All">All</option>
+            <option value="Movie">Movie</option>
+            <option value="TV Show">TV Show</option>
+            <option value="Game">Game</option>
+          </Select>
+        </div>
+        <Button
+          onClick={() => {
+            setModalProps({ open: true, create: true });
+          }}
+        >
+          Create Media
+        </Button>
+      </MediaListControls>
+      {loadFunction()}
+    </Container>
   );
 };
 
@@ -18,6 +191,7 @@ if (!container) {
 const root = createRoot(container);
 root.render(
   <Provider store={store}>
+    <GlobalStyle />
     <App />
   </Provider>
 );
