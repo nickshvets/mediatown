@@ -19,13 +19,21 @@ interface MediaFormProps {
     releaseYear?: number | undefined;
     rating?: number | undefined;
   };
-
+  handleModalInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleSelectChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  handleSubmit: (create: boolean) => void;
+  setModalProps: (modalProps: { open: boolean; create?: boolean }) => void;
+  setMediaForm: (mediaForm: typeof emptyMedia) => void;
 }
 
 export const MediaForm: React.FC<MediaFormProps> = ({
   modalProps,
   mediaForm,
-
+  handleModalInputChange,
+  handleSelectChange,
+  handleSubmit,
+  setModalProps,
+  setMediaForm,
 }) => {
   const { open, create = false } = modalProps;
   const { image } = mediaForm;
@@ -64,6 +72,94 @@ export const MediaForm: React.FC<MediaFormProps> = ({
     marginBottom: '0.5rem',
   };
 
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (open) {
+        const modalElement = document.querySelector('.modal-container');
 
-  return <>MediaForm</>;
+        if (modalElement && !modalElement.contains(e.target as Node)) {
+          setModalProps({ open: false });
+          setMediaForm(emptyMedia);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [open, setModalProps, setMediaForm]);
+  return (
+    <>
+      {open && (
+        <div style={modalStyles} className="modal-container">
+          <H4>{create ? 'Create' : 'Edit'} Media</H4>
+          <Input
+            type="text"
+            name="title"
+            value={mediaForm.title || ''}
+            onChange={handleModalInputChange}
+            placeholder="Title"
+            style={modalElementStyle}
+          />
+
+          <Select
+            value={mediaForm.type || ''}
+            onChange={handleSelectChange}
+            name="type"
+            style={modalElementStyle}
+          >
+            <option value="Movie">Movie</option>
+            <option value="TV Show">TV Show</option>
+            <option value="Game">Game</option>
+          </Select>
+
+          <Input
+            type="text"
+            name="genre"
+            value={mediaForm.genre || ''}
+            onChange={handleModalInputChange}
+            placeholder="Genre"
+            style={modalElementStyle}
+          />
+
+          <Input
+            type="number"
+            name="releaseYear"
+            value={mediaForm.releaseYear || ''}
+            onChange={handleModalInputChange}
+            placeholder="Release Year"
+            style={modalElementStyle}
+          />
+
+          <Input
+            type="number"
+            name="rating"
+            value={mediaForm.rating || ''}
+            onChange={handleModalInputChange}
+            placeholder="Rating"
+            style={modalElementStyle}
+          />
+
+          <Button
+            onClick={() => handleSubmit(create)}
+            style={modalElementStyle}
+          >
+            Submit
+          </Button>
+
+          <Button
+            onClick={() => {
+              setModalProps({ open: false });
+              setMediaForm(emptyMedia);
+            }}
+            style={modalElementStyle}
+          >
+            Close
+          </Button>
+        </div>
+      )}
+    </>
+  );
 };
