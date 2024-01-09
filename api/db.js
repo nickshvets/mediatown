@@ -187,7 +187,7 @@ module.exports = () => {
       rating: 8.0,
       dateCreated: 1698759507734,
       image:
-        'https://www.mightygamesmag.de/wp-content/uploads/2020/04/Beitragsbild_Valhalla-1024x576.jpg',
+        'https://www.epicdope.com/wp-content/uploads/2020/08/A-CREED-VALHalla.jpg',
     },
     {
       id: 1698759507737,
