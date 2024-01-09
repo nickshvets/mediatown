@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSelector, useDispatch, Provider } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+
 import {
   getData,
   updateData,
@@ -28,7 +30,24 @@ import { MediaForm } from './components/media/MediaForm';
 import { MediaDeleteForm } from './components/media/MediaDeleteForm';
 import Select from './components/Select';
 
+import 'react-toastify/dist/ReactToastify.css';
+import theme from './theme';
+
 const App = () => {
+  const showToast = (message: string) => {
+    toast.success(message, {
+      position: 'top-right',
+      theme: 'dark',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      progressStyle: { background: theme.palette.secondary.main },
+      style: { border: `1px solid ${theme.palette.secondary.main}` },
+    });
+  };
   const { data, loading, error } = useSelector(
     (state: RootState) => state.media
   );
@@ -64,6 +83,7 @@ const App = () => {
   const onDelete = (id: number) => {
     dispatch(deleteData(id));
     setModalDeleteProps({ open: false });
+    showToast('Successfully deleted');
   };
 
   const [errors, setErrors] = useState({
@@ -126,12 +146,14 @@ const App = () => {
         dispatch(createData(mediaForm));
         setModalProps({ open: false });
         setMediaForm(emptyMedia);
+        showToast('Successfully created');
       } else {
         const { id } = mediaForm;
         if (id !== undefined) {
           dispatch(updateData(id, mediaForm));
           setModalProps({ open: false });
           setMediaForm(emptyMedia);
+          showToast('Successfully updated');
         }
       }
     }
@@ -229,6 +251,7 @@ const App = () => {
         </Button>
       </MediaListControls>
       {loadFunction()}
+      <ToastContainer />
     </Container>
   );
 };
