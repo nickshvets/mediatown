@@ -6,6 +6,7 @@ function createMedia(mediaItem) {
     genre: mediaItem.genre,
     releaseYear: mediaItem.releaseYear,
     rating: mediaItem.rating,
+    image: mediaItem.image,
     dateCreated: new Date().getTime(),
   };
 }

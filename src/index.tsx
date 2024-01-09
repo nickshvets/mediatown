@@ -72,6 +72,7 @@ const App = () => {
     genre: false,
     releaseYear: false,
     rating: false,
+    image: false,
   });
 
   const validateForm = () => {
@@ -82,6 +83,7 @@ const App = () => {
       releaseYear:
         mediaForm.releaseYear === undefined || mediaForm.releaseYear <= 0,
       rating: mediaForm.rating === undefined || mediaForm.rating <= 0,
+      image: !mediaForm.image,
     };
 
     setErrors(newErrors);
@@ -162,6 +164,7 @@ const App = () => {
             handleSubmit={handleSubmit}
             setModalProps={setModalProps}
             setMediaForm={setMediaForm}
+            setErrors={setErrors}
           />
         </MediaListContainer>
       );

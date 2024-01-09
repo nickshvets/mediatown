@@ -18,7 +18,7 @@ const MediaContainer = styled.div<{ backgroundUrl?: string }>`
     ),
     url(${(props: any) =>
       props.backgroundUrl ||
-      'https://free4kwallpapers.com/uploads/originals/2015/12/16/the-evil-within-2014-game-wallpaper.jpg'});
+      'https://wallbox.ru/resize/800x480/wallpapers/main/201419/3019ece58f6379e.jpg'});
 
   background-size: cover;
   background-position: center;

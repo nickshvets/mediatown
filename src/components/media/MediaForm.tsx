@@ -2,7 +2,7 @@ import React, { useEffect, ChangeEvent } from 'react';
 import Input from '../Input';
 import Button from '../Button';
 import H4 from '../H4';
-import { emptyMedia } from '../../types';
+import { emptyMedia, emptyErrors } from '../../types';
 import Select from '../Select';
 import theme from '../../theme';
 
@@ -25,6 +25,7 @@ interface MediaFormProps {
   handleSubmit: (create: boolean) => void;
   setModalProps: (modalProps: { open: boolean; create?: boolean }) => void;
   setMediaForm: (mediaForm: typeof emptyMedia) => void;
+  setErrors: (mediaForm: typeof emptyErrors) => void;
 }
 
 export const MediaForm: React.FC<MediaFormProps> = ({
@@ -36,6 +37,7 @@ export const MediaForm: React.FC<MediaFormProps> = ({
   handleSubmit,
   setModalProps,
   setMediaForm,
+  setErrors,
 }) => {
   const { open, create = false } = modalProps;
   const { image } = mediaForm;
@@ -62,7 +64,7 @@ export const MediaForm: React.FC<MediaFormProps> = ({
       url(${
         image
           ? image
-          : 'https://free4kwallpapers.com/uploads/originals/2015/12/16/the-evil-within-2014-game-wallpaper.jpg'
+          : 'https://wallbox.ru/resize/800x480/wallpapers/main/201419/3019ece58f6379e.jpg'
       })`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -84,6 +86,7 @@ export const MediaForm: React.FC<MediaFormProps> = ({
         if (modalElement && !modalElement.contains(e.target as Node)) {
           setModalProps({ open: false });
           setMediaForm(emptyMedia);
+          setErrors(emptyErrors);
         }
       }
     };
@@ -93,7 +96,7 @@ export const MediaForm: React.FC<MediaFormProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, [open, setModalProps, setMediaForm]);
+  }, [open, setModalProps, setMediaForm, setErrors]);
 
   return (
     <>
@@ -163,6 +166,18 @@ export const MediaForm: React.FC<MediaFormProps> = ({
             style={inputStyle('rating')}
           />
 
+          {errors.image && (
+            <span style={{ color: 'red' }}>Image link is required.</span>
+          )}
+          <Input
+            type="text"
+            name="image"
+            value={mediaForm.image || ''}
+            onChange={handleModalInputChange}
+            placeholder="Image link"
+            style={inputStyle('image')}
+          />
+
           <Button
             onClick={() => handleSubmit(create)}
             style={{ margin: '0.5rem' }}
@@ -173,6 +188,7 @@ export const MediaForm: React.FC<MediaFormProps> = ({
             onClick={() => {
               setModalProps({ open: false });
               setMediaForm(emptyMedia);
+              setErrors(emptyErrors);
             }}
             style={{ margin: '0.5rem' }}
           >
