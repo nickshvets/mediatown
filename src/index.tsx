@@ -66,35 +66,71 @@ const App = () => {
     }
   };
 
+  const [errors, setErrors] = useState({
+    title: false,
+    type: false,
+    genre: false,
+    releaseYear: false,
+    rating: false,
+  });
+
+  const validateForm = () => {
+    const newErrors = {
+      title: !mediaForm.title,
+      type: !mediaForm.type,
+      genre: !mediaForm.genre,
+      releaseYear:
+        mediaForm.releaseYear === undefined || mediaForm.releaseYear <= 0,
+      rating: mediaForm.rating === undefined || mediaForm.rating <= 0,
+    };
+
+    setErrors(newErrors);
+    return Object.values(newErrors).every((field) => !field); // Return true if all fields are valid
+  };
+
   const handleModalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let newValue: string | number | undefined = value;
 
-    if ((name === 'releaseYear' || name === 'rating') && value === '') {
+    if ((name === 'releaseYear' || name === 'rating') && value.trim() === '') {
       newValue = undefined;
     } else if (name === 'releaseYear' || name === 'rating') {
       newValue = parseInt(value, 10);
     }
 
     setMediaForm((prev) => ({ ...prev, [name]: newValue }));
+
+    // Use type assertion
+    const errorKey = name as keyof typeof errors;
+    if (errors[errorKey]) {
+      setErrors({ ...errors, [errorKey]: false });
+    }
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setMediaForm((prev) => ({ ...prev, [name]: value }));
+
+    // Use type assertion
+    const errorKey = name as keyof typeof errors;
+    if (errors[errorKey]) {
+      setErrors({ ...errors, [errorKey]: false });
+    }
   };
 
   const handleSubmit = (create: boolean) => {
-    if (create) {
-      dispatch(createData(mediaForm));
-      setModalProps({ open: false });
-      setMediaForm(emptyMedia);
-    } else {
-      const { id } = mediaForm;
-      if (id !== undefined) {
-        dispatch(updateData(id, mediaForm));
+    if (validateForm()) {
+      if (create) {
+        dispatch(createData(mediaForm));
         setModalProps({ open: false });
         setMediaForm(emptyMedia);
+      } else {
+        const { id } = mediaForm;
+        if (id !== undefined) {
+          dispatch(updateData(id, mediaForm));
+          setModalProps({ open: false });
+          setMediaForm(emptyMedia);
+        }
       }
     }
   };
@@ -118,6 +154,7 @@ const App = () => {
           ))}
 
           <MediaForm
+            errors={errors}
             modalProps={modalProps}
             mediaForm={mediaForm}
             handleModalInputChange={handleModalInputChange}

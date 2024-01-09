@@ -11,6 +11,7 @@ interface MediaFormProps {
     open: boolean;
     create?: boolean;
   };
+  errors: any;
   mediaForm: {
     image?: string;
     title: string;
@@ -28,6 +29,7 @@ interface MediaFormProps {
 
 export const MediaForm: React.FC<MediaFormProps> = ({
   modalProps,
+  errors,
   mediaForm,
   handleModalInputChange,
   handleSelectChange,
@@ -68,9 +70,11 @@ export const MediaForm: React.FC<MediaFormProps> = ({
     borderRadius: '4px',
   };
 
-  const modalElementStyle: React.CSSProperties = {
+  const inputStyle = (fieldName: string): React.CSSProperties => ({
     marginBottom: '0.5rem',
-  };
+    border: errors[fieldName] ? '1px solid red' : '',
+    borderRadius: '5px',
+  });
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -90,71 +94,87 @@ export const MediaForm: React.FC<MediaFormProps> = ({
       document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, [open, setModalProps, setMediaForm]);
+
   return (
     <>
       {open && (
         <div style={modalStyles} className="modal-container">
           <H4>{create ? 'Create' : 'Edit'} Media</H4>
+          {errors.title && (
+            <span style={{ color: 'red' }}>Title is required.</span>
+          )}
           <Input
             type="text"
             name="title"
             value={mediaForm.title || ''}
             onChange={handleModalInputChange}
             placeholder="Title"
-            style={modalElementStyle}
+            style={inputStyle('title')}
           />
 
+          {errors.type && (
+            <span style={{ color: 'red' }}>Type is required.</span>
+          )}
           <Select
             value={mediaForm.type || ''}
             onChange={handleSelectChange}
             name="type"
-            style={modalElementStyle}
+            style={inputStyle('type')}
           >
+            <option value="">Select Type</option>
             <option value="Movie">Movie</option>
             <option value="TV Show">TV Show</option>
             <option value="Game">Game</option>
           </Select>
 
+          {errors.genre && (
+            <span style={{ color: 'red' }}>Genre is required.</span>
+          )}
           <Input
             type="text"
             name="genre"
             value={mediaForm.genre || ''}
             onChange={handleModalInputChange}
             placeholder="Genre"
-            style={modalElementStyle}
+            style={inputStyle('genre')}
           />
 
+          {errors.releaseYear && (
+            <span style={{ color: 'red' }}>Release year is required.</span>
+          )}
           <Input
             type="number"
             name="releaseYear"
             value={mediaForm.releaseYear || ''}
             onChange={handleModalInputChange}
             placeholder="Release Year"
-            style={modalElementStyle}
+            style={inputStyle('releaseYear')}
           />
 
+          {errors.rating && (
+            <span style={{ color: 'red' }}>Rating is required.</span>
+          )}
           <Input
             type="number"
             name="rating"
             value={mediaForm.rating || ''}
             onChange={handleModalInputChange}
             placeholder="Rating"
-            style={modalElementStyle}
+            style={inputStyle('rating')}
           />
 
           <Button
             onClick={() => handleSubmit(create)}
-            style={modalElementStyle}
+            style={{ margin: '0.5rem' }}
           >
             Submit
           </Button>
-
           <Button
             onClick={() => {
               setModalProps({ open: false });
               setMediaForm(emptyMedia);
             }}
-            style={modalElementStyle}
+            style={{ margin: '0.5rem' }}
           >
             Close
           </Button>

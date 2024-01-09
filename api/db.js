@@ -34,7 +34,7 @@ module.exports = () => {
       type: MediaType.TVShow,
       genre: 'Crime',
       releaseYear: 2015,
-      rating: 9.0,
+      rating: 10,
       dateCreated: 1698759507706,
       image: 'https://i.ytimg.com/vi/OO1sBtc2mx4/maxresdefault.jpg',
     },
