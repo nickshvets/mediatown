@@ -54,7 +54,7 @@ export const MediaForm: React.FC<MediaFormProps> = ({
     zIndex: 999,
     background: '#161616',
     boxShadow: '4px 4px 194px 107px rgba(0,0,0,0.98)',
-
+        
     // Adding the provided styles:
     backgroundImage: `linear-gradient(
         45deg,

@@ -7,13 +7,14 @@ import { MediaTypeLabel } from './components/media/MediaTypeLabel';
 interface MediaProps {
   onDelete: (id: number) => void;
   setModalProps: (props: { open: boolean; create?: boolean }) => void;
+  setModalDeleteProps: (modalProps: { open: boolean }) => void;
   setMediaForm: (mediaItem: MediaType) => void;
   mediaItem: MediaType;
   image?: string;
 }
 
 const MediaItem = (props: MediaProps) => {
-  const { mediaItem, onDelete, setModalProps, setMediaForm } = props;
+  const { mediaItem, setModalDeleteProps, setModalProps, setMediaForm } = props;
   const { image } = mediaItem;
 
   const handleEdit = () => {
@@ -51,7 +52,14 @@ const MediaItem = (props: MediaProps) => {
       </div>
       <ButtonsContainer>
         <Button onClick={handleEdit}>Edit</Button>
-        <Button onClick={() => onDelete(mediaItem.id!)}>Delete</Button>
+        <Button
+          onClick={() => {
+            setMediaForm(mediaItem);
+            setModalDeleteProps({ open: true });
+          }}
+        >
+          Delete
+        </Button>
       </ButtonsContainer>
     </MediaContainer>
   );

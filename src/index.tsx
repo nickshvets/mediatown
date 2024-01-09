@@ -25,6 +25,7 @@ import {
 import { store } from './store/store';
 import GlobalStyle from './GlobalStyle';
 import { MediaForm } from './components/media/MediaForm';
+import { MediaDeleteForm } from './components/media/MediaDeleteForm';
 import Select from './components/Select';
 
 const App = () => {
@@ -43,6 +44,9 @@ const App = () => {
     open: boolean;
     create?: boolean;
   });
+  const [modalDeleteProps, setModalDeleteProps] = useState({ open: false } as {
+    open: boolean;
+  });
   const [mediaForm, setMediaForm] = useState(emptyMedia);
 
   useEffect(() => {
@@ -58,12 +62,8 @@ const App = () => {
   };
 
   const onDelete = (id: number) => {
-    const result = window.confirm(
-      'Do you really want to delete this mediaItem?'
-    );
-    if (result) {
-      dispatch(deleteData(id));
-    }
+    dispatch(deleteData(id));
+    setModalDeleteProps({ open: false });
   };
 
   const [errors, setErrors] = useState({
@@ -152,6 +152,7 @@ const App = () => {
               onDelete={onDelete}
               setModalProps={setModalProps}
               setMediaForm={setMediaForm}
+              setModalDeleteProps={setModalDeleteProps}
             />
           ))}
 
@@ -165,6 +166,14 @@ const App = () => {
             setModalProps={setModalProps}
             setMediaForm={setMediaForm}
             setErrors={setErrors}
+          />
+
+          <MediaDeleteForm
+            modalDeleteProps={modalDeleteProps}
+            setModalDeleteProps={setModalDeleteProps}
+            setMediaForm={setMediaForm}
+            mediaForm={mediaForm}
+            handleDelete={onDelete}
           />
         </MediaListContainer>
       );
@@ -201,7 +210,7 @@ const App = () => {
             placeholder="Search Media..."
           />
           <Select
-            style={{ marginLeft: '0.1rem' }}
+            style={{ marginLeft: '0.2rem' }}
             value={selectedType}
             onChange={handleTypeChange}
           >

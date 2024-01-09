@@ -4,6 +4,7 @@ const theme = {
       main: '#FF5500',
       light: '#FD6E35',
       dark: '#CC4400',
+      danger: 'red',
     },
     secondary: {
       main: '#FF5500',
