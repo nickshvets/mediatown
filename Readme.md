@@ -4,7 +4,8 @@
 
 MediaTown is a React and TypeScript application that provides a dynamic platform for managing a variety of media types such as movies, TV shows, and games. The application uses a mock JSON server to simulate data storage and retrieval, making it an excellent tool for both development and demonstration purposes.
 
-![Video example](https://github.com/nickshvetsdev/mediatown/blob/master/public/demo-app-2.gif?raw=true)
+## Demo
+![Video example](https://s13.gifyu.com/images/S0Nh3.gif)
 
 ## Features
 
@@ -35,7 +36,7 @@ In a separate console, or a separate tab in the root directory of the project, r
 
 `npm run start:web`
 
-![Video example](https://s13.gifyu.com/images/S0Nh3.gif)
+![Video example](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXpvNTVhaW5naTdxeGppbTF5NXQ1dDJjdGpqcmM5dTJoNTEwdDUyayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nj2CNogUNyWCptiCcR/giphy.gif)
 
 ## Usage
 
