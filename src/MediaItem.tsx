@@ -37,6 +37,7 @@ const MediaItem = (props: MediaProps) => {
       <span style={spanStyle}>Title: {mediaItem.title}</span>
       <span style={spanStyle}></span>
       <span style={spanStyle}>Release year: {mediaItem.releaseYear}</span>
+      <span style={spanStyle}>Genre: {mediaItem.genre}</span>
       <div style={spanStyle}>
         Rating:{' '}
         <span
