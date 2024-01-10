@@ -35,7 +35,7 @@ In a separate console, or a separate tab in the root directory of the project, r
 
 `npm run start:web`
 
-![Video example](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXpvNTVhaW5naTdxeGppbTF5NXQ1dDJjdGpqcmM5dTJoNTEwdDUyayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nj2CNogUNyWCptiCcR/giphy.gif)
+![Video example](https://s13.gifyu.com/images/S0Nh3.gif)
 
 ## Usage
 
