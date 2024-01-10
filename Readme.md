@@ -1,4 +1,4 @@
-# README for MediaTown
+# MediaTown
 
 ## _Personal Media management tool_
 
