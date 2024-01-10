@@ -14,19 +14,26 @@ MediaTown is a React and TypeScript application that provides a dynamic platform
 ## Getting Started
 
 Clone the project
+
 `git clone git@github.com:nickshvetsdev/mediatown.git`
 
 Install all the necessary packages
+
 `npm install`
 
-![Video example](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXpvNTVhaW5naTdxeGppbTF5NXQ1dDJjdGpqcmM5dTJoNTEwdDUyayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nj2CNogUNyWCptiCcR/giphy.gif)
-
 Navigate to the `/api` folder:
+
 `cd api`
+
 Start the JSON server:
+
 `npm start:api` -> This command starts the backend server which listens for API requests.
+
 In a separate console, or a separate tab in the root directory of the project, run:
+
 `npm run start:web`
+
+![Video example](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXpvNTVhaW5naTdxeGppbTF5NXQ1dDJjdGpqcmM5dTJoNTEwdDUyayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Nj2CNogUNyWCptiCcR/giphy.gif)
 
 ## Usage
 
